@@ -18,11 +18,17 @@ import com.aurashield.ai.AuraShieldApp
 import com.aurashield.ai.MainActivity
 import com.aurashield.ai.R
 import kotlinx.coroutines.*
+import org.tensorflow.lite.Interpreter
+import java.io.FileInputStream
+import java.nio.MappedByteBuffer
+import java.nio.channels.FileChannel
 
 class BackgroundMonitorService : Service() {
 
     private val serviceScope = CoroutineScope(Dispatchers.Default + SupervisorJob())
     private var isRunning = false
+    private var tfliteInterpreter: Interpreter? = null
+    private var isThreatBypassed = false
 
     override fun onCreate() {
         super.onCreate()
@@ -38,12 +44,14 @@ class BackgroundMonitorService : Service() {
         }
         
         if (intent?.action == ACTION_DISMISS_OVERLAY) {
+            isThreatBypassed = true
             hideOverlay()
             return START_STICKY
         }
 
         if (!isRunning) {
             isRunning = true
+            isThreatBypassed = false
             startForegroundServiceCompat()
             startMonitoringLoop()
         }
@@ -103,22 +111,67 @@ class BackgroundMonitorService : Service() {
     private var windowManager: WindowManager? = null
     private var overlayView: View? = null
 
+    private fun loadModelFile(): MappedByteBuffer {
+        val fileDescriptor = assets.openFd("voice_detector.tflite")
+        val inputStream = FileInputStream(fileDescriptor.fileDescriptor)
+        val fileChannel = inputStream.channel
+        val startOffset = fileDescriptor.startOffset
+        val declaredLength = fileDescriptor.declaredLength
+        return fileChannel.map(FileChannel.MapMode.READ_ONLY, startOffset, declaredLength)
+    }
+
+    private fun initInterpreter() {
+        try {
+            tfliteInterpreter = Interpreter(loadModelFile())
+            Log.i(TAG, "TFLite voice_detector model loaded successfully.")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error initializing TFLite interpreter: ${e.message}", e)
+        }
+    }
+
     private fun startMonitoringLoop() {
+        initInterpreter()
+        
         serviceScope.launch {
             // Verify and demonstrate link resolution of ML runtimes
             initMLRuntimes()
             
-            // Simulative trigger: show emergency overlay lockdown after 12 seconds
-            launch {
-                delay(12000)
-                withContext(Dispatchers.Main) {
-                    showOverlay()
-                }
-            }
+            val inputData = Array(1) { Array(128) { Array(128) { FloatArray(3) } } }
+            val outputData = Array(1) { FloatArray(1) }
+            var tickCount = 0
             
             while (isActive) {
                 Log.d(TAG, "AI background monitor performing inference tick...")
-                // In a production app, fetch sensor data/inputs and invoke TFLite or ONNX runtimes.
+                
+                if (tfliteInterpreter != null) {
+                    try {
+                        tickCount++
+                        
+                        // Run inference using the input data mapping [1, 128, 128, 3]
+                        tfliteInterpreter?.run(inputData, outputData)
+                        val realProbability = outputData[0][0]
+                        
+                        // Simulate threat logic:
+                        // On tick 3, simulate a deepfake clone voice (realProbability = 0.08f -> Risk = 92%)
+                        // Otherwise safe voice (realProbability = 0.98f -> Risk = 2%)
+                        val finalRealProb = if (tickCount == 3) 0.08f else realProbability
+                        val riskPercentage = (1.0f - finalRealProb) * 100f
+                        
+                        Log.i(TAG, "Inference output (prob of real): $finalRealProb, Computed Risk: $riskPercentage%")
+                        
+                        if (riskPercentage >= 80f && !isThreatBypassed) {
+                            Log.w(TAG, "CRITICAL THREAT DETECTED! Threat Risk is $riskPercentage%. Displaying lock overlay.")
+                            withContext(Dispatchers.Main) {
+                                showOverlay()
+                            }
+                        }
+                    } catch (e: Exception) {
+                        Log.e(TAG, "Inference execution error: ${e.message}", e)
+                    }
+                } else {
+                    Log.w(TAG, "TFLite interpreter not initialized.")
+                }
+                
                 delay(5000) // periodic interval
             }
         }
@@ -195,6 +248,12 @@ class BackgroundMonitorService : Service() {
         Log.d(TAG, "Stopping service internally")
         isRunning = false
         hideOverlay() // Ensure overlay is removed on service destruction
+        try {
+            tfliteInterpreter?.close()
+            tfliteInterpreter = null
+        } catch (e: Exception) {
+            Log.e(TAG, "Error closing interpreter: ${e.message}")
+        }
         stopForeground(STOP_FOREGROUND_REMOVE)
         stopSelf()
     }
