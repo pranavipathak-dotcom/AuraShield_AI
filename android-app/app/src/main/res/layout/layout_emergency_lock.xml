@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#E60B0F26"
+    android:clickable="true"
+    android:focusable="true">
+
+    <!-- Center Warning Console Card -->
+    <LinearLayout
+        android:id="@+id/cardEmergency"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="32dp"
+        android:background="@drawable/bg_metrics_card"
+        android:orientation="vertical"
+        android:padding="28dp"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- Critical Threat Icon (system warning indicator) -->
+        <ImageView
+            android:id="@+id/ivWarningIcon"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:src="@android:drawable/stat_sys_warning"
+            app:tint="@color/neon_coral"
+            android:contentDescription="Emergency Warning" />
+
+        <!-- Warning Title -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="EMERGENCY LOCKDOWN"
+            android:textColor="@color/neon_coral"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:layout_marginTop="20dp" />
+
+        <!-- Subtitle warning state -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="AuraShield AI Edge Intervention"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:alpha="0.7"
+            android:textStyle="bold"
+            android:layout_marginTop="4dp" />
+
+        <!-- Threat Details Description text -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="A critical voice stream threat or local execution anomaly was intercepted. Security protocols have locked the system overlay layer to block unauthorized data synchronization."
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:layout_marginTop="16dp"
+            android:lineSpacingExtra="4dp" />
+
+        <!-- Action button to dismiss lock screen overlay -->
+        <Button
+            android:id="@+id/btnDismissLock"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:backgroundTint="@color/neon_coral"
+            android:text="Dismiss Overlay"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:layout_marginTop="28dp" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

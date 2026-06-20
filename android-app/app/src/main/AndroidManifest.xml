@@ -10,6 +10,9 @@
     
     <!-- Internet Permission for potential remote model downloads or telemetry -->
     <uses-permission android:name="android.permission.INTERNET" />
+    
+    <!-- System Overlay Permission (System Alert Window) -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
     <application
         android:name=".AuraShieldApp"
