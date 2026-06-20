@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="Theme.AuraShieldAI" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_700</item>
-        <item name="colorOnSecondary">@color/black</item>
+        <!-- Primary brand color (Electric Mint Green for safety). -->
+        <item name="colorPrimary">@color/mint_green</item>
+        <item name="colorOnPrimary">@color/black</item>
+        <!-- Secondary brand color (Neon Coral for alerts). -->
+        <item name="colorSecondary">@color/neon_coral</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <!-- Background and Window settings. -->
+        <item name="android:windowBackground">@color/midnight_navy</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">#121212</item>
+        <item name="android:statusBarColor">@color/midnight_navy_dark</item>
         <item name="android:windowLightStatusBar">false</item>
     </style>
 </resources>

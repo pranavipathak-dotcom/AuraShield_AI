@@ -180,7 +180,7 @@ class MainActivity : ComponentActivity() {
                             Icon(
                                 imageVector = if (serviceRunning) Icons.Default.CheckCircle else Icons.Default.Warning,
                                 contentDescription = null,
-                                tint = if (serviceRunning) Color(0xFF2E7D32) else Color(0xFFC62828),
+                                tint = if (serviceRunning) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error,
                                 modifier = Modifier.size(24.dp)
                             )
                             Spacer(modifier = Modifier.width(8.dp))
@@ -293,14 +293,15 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun AuraShieldTheme(content: @Composable () -> Unit) {
     val darkColorScheme = darkColorScheme(
-        primary = Color(0xFF64B5F6),
-        secondary = Color(0xFF81C784),
-        background = Color(0xFF121212),
-        surface = Color(0xFF1E1E1E),
-        onPrimary = Color(0xFF0D47A1),
-        onBackground = Color(0xFFE0E0E0),
+        primary = Color(0xFF00C896),       // Electric Mint Green
+        secondary = Color(0xFF00C896),
+        background = Color(0xFF0B0F26),      // Deep Midnight Navy
+        surface = Color(0xFF1F2336),         // Container background
+        onPrimary = Color(0xFF000000),
+        onBackground = Color(0xFFE2E8F0),
         onSurface = Color(0xFFFFFFFF),
-        error = Color(0xFFEF5350)
+        error = Color(0xFFFF6B6B),           // Neon Coral Red
+        primaryContainer = Color(0xFF0D323F) // Muted teal-green container
     )
     MaterialTheme(
         colorScheme = darkColorScheme,
