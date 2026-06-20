@@ -48,11 +48,13 @@
             android:textStyle="bold" />
     </LinearLayout>
 
-    <!-- Central Glowing Shield Button Section -->
+    <!-- Central Glowing Shield Button Section with Frosted Glassmorphism Background -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layoutShieldContainer"
         android:layout_width="260dp"
         android:layout_height="260dp"
+        android:background="@drawable/bg_shield_glass"
+        android:padding="20dp"
         app:layout_constraintTop_toBottomOf="@id/layoutStatus"
         app:layout_constraintBottom_toTopOf="@id/layoutAudioWave"
         app:layout_constraintStart_toStartOf="parent"
@@ -61,11 +63,10 @@
         <!-- Outer Glowing Ring -->
         <View
             android:id="@+id/viewShieldGlow"
-            android:layout_width="220dp"
-            android:layout_height="220dp"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
             android:background="@drawable/bg_shield_glow"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -73,8 +74,8 @@
         <!-- Core Button -->
         <ImageButton
             android:id="@+id/btnShield"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
             android:background="@drawable/bg_shield_button"
             android:src="@drawable/ic_shield"
             android:scaleType="centerInside"
@@ -86,7 +87,7 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- Live Audio Wave Analysis Section -->
+    <!-- Live Audio Wave Analysis Section (20-bar spectrum visualizer) -->
     <LinearLayout
         android:id="@+id/layoutAudioWave"
         android:layout_width="wrap_content"
@@ -98,19 +99,30 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- Wave Bars -->
-        <View android:id="@+id/waveBar1" android:layout_width="4dp" android:layout_height="15dp" android:layout_margin="3dp" android:background="@color/mint_green" />
-        <View android:id="@+id/waveBar2" android:layout_width="4dp" android:layout_height="30dp" android:layout_margin="3dp" android:background="@color/mint_green" />
-        <View android:id="@+id/waveBar3" android:layout_width="4dp" android:layout_height="48dp" android:layout_margin="3dp" android:background="@color/mint_green" />
-        <View android:id="@+id/waveBar4" android:layout_width="4dp" android:layout_height="25dp" android:layout_margin="3dp" android:background="@color/mint_green" />
-        <View android:id="@+id/waveBar5" android:layout_width="4dp" android:layout_height="60dp" android:layout_margin="3dp" android:background="@color/mint_green" />
-        <View android:id="@+id/waveBar6" android:layout_width="4dp" android:layout_height="35dp" android:layout_margin="3dp" android:background="@color/mint_green" />
-        <View android:id="@+id/waveBar7" android:layout_width="4dp" android:layout_height="15dp" android:layout_margin="3dp" android:background="@color/mint_green" />
-        <View android:id="@+id/waveBar8" android:layout_width="4dp" android:layout_height="40dp" android:layout_margin="3dp" android:background="@color/mint_green" />
-        <View android:id="@+id/waveBar9" android:layout_width="4dp" android:layout_height="52dp" android:layout_margin="3dp" android:background="@color/mint_green" />
-        <View android:id="@+id/waveBar10" android:layout_width="4dp" android:layout_height="22dp" android:layout_margin="3dp" android:background="@color/mint_green" />
-        <View android:id="@+id/waveBar11" android:layout_width="4dp" android:layout_height="45dp" android:layout_margin="3dp" android:background="@color/mint_green" />
-        <View android:id="@+id/waveBar12" android:layout_width="4dp" android:layout_height="15dp" android:layout_margin="3dp" android:background="@color/mint_green" />
+        <!-- Wave Bars with multi-layered opacity mapping -->
+        <View android:id="@+id/waveBar1" android:layout_width="3dp" android:layout_height="12dp" android:layout_margin="2dp" android:background="@color/mint_green" />
+        <View android:id="@+id/waveBar2" android:layout_width="3dp" android:layout_height="25dp" android:layout_margin="2dp" android:background="@color/mint_green" />
+        <View android:id="@+id/waveBar3" android:layout_width="3dp" android:layout_height="40dp" android:layout_margin="2dp" android:background="@color/mint_green" />
+        <View android:id="@+id/waveBar4" android:layout_width="3dp" android:layout_height="20dp" android:layout_margin="2dp" android:background="@color/mint_green" />
+        <View android:id="@+id/waveBar5" android:layout_width="3dp" android:layout_height="55dp" android:layout_margin="2dp" android:background="@color/mint_green" />
+        <View android:id="@+id/waveBar6" android:layout_width="3dp" android:layout_height="30dp" android:layout_margin="2dp" android:background="@color/mint_green" />
+        <View android:id="@+id/waveBar7" android:layout_width="3dp" android:layout_height="15dp" android:layout_margin="2dp" android:background="@color/mint_green" />
+        
+        <View android:id="@+id/waveBar8" android:layout_width="3dp" android:layout_height="35dp" android:layout_margin="2dp" android:background="@color/mint_green" android:alpha="0.5" />
+        <View android:id="@+id/waveBar9" android:layout_width="3dp" android:layout_height="50dp" android:layout_margin="2dp" android:background="@color/mint_green" android:alpha="0.5" />
+        <View android:id="@+id/waveBar10" android:layout_width="3dp" android:layout_height="20dp" android:layout_margin="2dp" android:background="@color/mint_green" android:alpha="0.5" />
+        
+        <View android:id="@+id/waveBar11" android:layout_width="3dp" android:layout_height="42dp" android:layout_margin="2dp" android:background="@color/mint_green" />
+        <View android:id="@+id/waveBar12" android:layout_width="3dp" android:layout_height="12dp" android:layout_margin="2dp" android:background="@color/mint_green" />
+        <View android:id="@+id/waveBar13" android:layout_width="3dp" android:layout_height="28dp" android:layout_margin="2dp" android:background="@color/mint_green" />
+        <View android:id="@+id/waveBar14" android:layout_width="3dp" android:layout_height="48dp" android:layout_margin="2dp" android:background="@color/mint_green" />
+        
+        <View android:id="@+id/waveBar15" android:layout_width="3dp" android:layout_height="18dp" android:layout_margin="2dp" android:background="@color/mint_green" android:alpha="0.3" />
+        <View android:id="@+id/waveBar16" android:layout_width="3dp" android:layout_height="36dp" android:layout_margin="2dp" android:background="@color/mint_green" android:alpha="0.3" />
+        <View android:id="@+id/waveBar17" android:layout_width="3dp" android:layout_height="62dp" android:layout_margin="2dp" android:background="@color/mint_green" android:alpha="0.8" />
+        <View android:id="@+id/waveBar18" android:layout_width="3dp" android:layout_height="28dp" android:layout_margin="2dp" android:background="@color/mint_green" />
+        <View android:id="@+id/waveBar19" android:layout_width="3dp" android:layout_height="40dp" android:layout_margin="2dp" android:background="@color/mint_green" />
+        <View android:id="@+id/waveBar20" android:layout_width="3dp" android:layout_height="15dp" android:layout_margin="2dp" android:background="@color/mint_green" />
 
     </LinearLayout>
 
@@ -155,8 +167,9 @@
                 android:layout_marginTop="4dp" />
         </LinearLayout>
 
+        <!-- Column separator -->
         <View
-            android:layout_width="1dp"
+            android:layout_width="1.2dp"
             android:layout_height="40dp"
             android:background="#1F2445"
             android:layout_gravity="center_vertical" />
@@ -188,8 +201,9 @@
                 android:layout_marginTop="4dp" />
         </LinearLayout>
 
+        <!-- Column separator -->
         <View
-            android:layout_width="1dp"
+            android:layout_width="1.2dp"
             android:layout_height="40dp"
             android:background="#1F2445"
             android:layout_gravity="center_vertical" />

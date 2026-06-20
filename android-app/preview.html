@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AuraShield AI - Android Layout Preview</title>
+    <title>AuraShield AI - Premium cybersecurity layout preview</title>
     <style>
         :root {
             --midnight-navy: #0B0F26;
@@ -95,7 +95,7 @@
             text-transform: uppercase;
         }
 
-        /* Central button section */
+        /* Central button section with frosted glassmorphism */
         .shield-section {
             flex-grow: 1;
             display: flex;
@@ -104,22 +104,36 @@
             position: relative;
         }
 
-        .shield-glow-ring {
-            width: 220px;
-            height: 220px;
+        .shield-glass-container {
+            width: 250px;
+            height: 250px;
             border-radius: 50%;
-            background-color: rgba(0, 200, 150, 0.04);
-            border: 2px solid rgba(0, 200, 150, 0.1);
+            background: rgba(31, 35, 54, 0.3);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1.2px solid rgba(0, 200, 150, 0.2);
             position: absolute;
             display: flex;
             justify-content: center;
             align-items: center;
-            animation: shieldPulse 1.5s infinite alternate ease-in-out;
+            animation: shieldPulse 1.8s infinite alternate ease-in-out;
+            box-shadow: 0 0 35px rgba(0, 200, 150, 0.05);
+            box-sizing: border-box;
+        }
+
+        .shield-glow-ring {
+            width: 190px;
+            height: 190px;
+            border-radius: 50%;
+            background-color: rgba(0, 200, 150, 0.04);
+            border: 1.5px dashed rgba(0, 200, 150, 0.15);
+            position: absolute;
+            animation: spin 30s linear infinite;
         }
 
         .shield-button {
-            width: 150px;
-            height: 150px;
+            width: 140px;
+            height: 140px;
             background-color: var(--gray-dark);
             border: 3px solid var(--mint-green);
             border-radius: 50%;
@@ -134,62 +148,75 @@
         }
 
         .shield-button:hover {
-            box-shadow: 0 0 30px rgba(0, 200, 150, 0.4);
+            box-shadow: 0 0 30px rgba(0, 200, 150, 0.45);
             transform: scale(1.02);
         }
 
         /* SVG Shield Icon */
         .shield-icon {
-            width: 60px;
-            height: 60px;
+            width: 54px;
+            height: 54px;
             fill: var(--mint-green);
+            transition: fill 0.3s ease;
         }
 
-        /* Live Audio Wave visualizer placeholder */
+        /* Live Frequency Spectrum Visualizer */
         .audio-wave-container {
             height: 72px;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
+            gap: 4px;
             margin-bottom: 24px;
             flex-shrink: 0;
         }
 
         .wave-bar {
-            width: 4px;
+            width: 3px;
             height: 15px;
             background-color: var(--mint-green);
             border-radius: 2px;
-            animation: waveAnimate 1s infinite ease-in-out;
+            animation: waveAnimate 1.2s infinite ease-in-out;
             transform-origin: center;
         }
 
-        /* Random animations for audio wave bars */
-        .wave-bar:nth-child(1) { height: 15px; animation-delay: 0.1s; animation-duration: 0.8s; }
-        .wave-bar:nth-child(2) { height: 30px; animation-delay: 0.3s; animation-duration: 1.1s; }
-        .wave-bar:nth-child(3) { height: 48px; animation-delay: 0.5s; animation-duration: 0.9s; }
-        .wave-bar:nth-child(4) { height: 25px; animation-delay: 0.2s; animation-duration: 1.3s; }
-        .wave-bar:nth-child(5) { height: 60px; animation-delay: 0.6s; animation-duration: 0.7s; }
-        .wave-bar:nth-child(6) { height: 35px; animation-delay: 0.4s; animation-duration: 1.0s; }
+        /* Smooth spectrum dynamic delays & heights */
+        .wave-bar:nth-child(1) { height: 12px; animation-delay: 0.1s; animation-duration: 0.8s; }
+        .wave-bar:nth-child(2) { height: 25px; animation-delay: 0.3s; animation-duration: 1.1s; }
+        .wave-bar:nth-child(3) { height: 40px; animation-delay: 0.5s; animation-duration: 0.9s; }
+        .wave-bar:nth-child(4) { height: 20px; animation-delay: 0.2s; animation-duration: 1.3s; }
+        .wave-bar:nth-child(5) { height: 55px; animation-delay: 0.6s; animation-duration: 0.7s; }
+        .wave-bar:nth-child(6) { height: 30px; animation-delay: 0.4s; animation-duration: 1.0s; }
         .wave-bar:nth-child(7) { height: 15px; animation-delay: 0.2s; animation-duration: 0.9s; }
-        .wave-bar:nth-child(8) { height: 40px; animation-delay: 0.5s; animation-duration: 1.2s; }
-        .wave-bar:nth-child(9) { height: 52px; animation-delay: 0.1s; animation-duration: 0.8s; }
-        .wave-bar:nth-child(10) { height: 22px; animation-delay: 0.3s; animation-duration: 1.1s; }
-        .wave-bar:nth-child(11) { height: 45px; animation-delay: 0.4s; animation-duration: 0.9s; }
-        .wave-bar:nth-child(12) { height: 15px; animation-delay: 0.2s; animation-duration: 1.4s; }
+        /* Layer 2: Muted opacity */
+        .wave-bar:nth-child(8) { height: 35px; animation-delay: 0.5s; animation-duration: 1.2s; opacity: 0.5; }
+        .wave-bar:nth-child(9) { height: 50px; animation-delay: 0.1s; animation-duration: 0.8s; opacity: 0.5; }
+        .wave-bar:nth-child(10) { height: 20px; animation-delay: 0.3s; animation-duration: 1.1s; opacity: 0.5; }
+        /* Layer 3: Mainstream */
+        .wave-bar:nth-child(11) { height: 42px; animation-delay: 0.4s; animation-duration: 0.9s; }
+        .wave-bar:nth-child(12) { height: 12px; animation-delay: 0.2s; animation-duration: 1.4s; }
+        .wave-bar:nth-child(13) { height: 28px; animation-delay: 0.3s; animation-duration: 1.0s; }
+        .wave-bar:nth-child(14) { height: 48px; animation-delay: 0.5s; animation-duration: 0.8s; }
+        /* Layer 4: Deep background */
+        .wave-bar:nth-child(15) { height: 18px; animation-delay: 0.2s; animation-duration: 1.2s; opacity: 0.3; }
+        .wave-bar:nth-child(16) { height: 36px; animation-delay: 0.6s; animation-duration: 0.9s; opacity: 0.3; }
+        .wave-bar:nth-child(17) { height: 62px; animation-delay: 0.1s; animation-duration: 0.7s; opacity: 0.8; }
+        .wave-bar:nth-child(18) { height: 28px; animation-delay: 0.4s; animation-duration: 1.1s; }
+        .wave-bar:nth-child(19) { height: 40px; animation-delay: 0.3s; animation-duration: 0.9s; }
+        .wave-bar:nth-child(20) { height: 15px; animation-delay: 0.2s; animation-duration: 1.3s; }
 
         /* Bottom metrics card */
         .metrics-card {
-            background-color: var(--midnight-navy-dark);
-            border: 1px solid #1F2445;
-            border-radius: 16px;
+            background-color: #12162E;
+            border: 1.2px solid #1F2445;
+            border-radius: 18px;
             padding: 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 10px;
             flex-shrink: 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
         }
 
         .metric-item {
@@ -211,29 +238,35 @@
 
         .metric-label {
             font-size: 9px;
-            font-weight: 800;
+            font-weight: 850;
             color: var(--gray-light);
             opacity: 0.6;
             margin-top: 4px;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.6px;
         }
 
         .divider {
-            width: 1px;
+            width: 1.2px;
             height: 35px;
             background-color: #1F2445;
         }
 
-        /* Pulsing keyframe for shield outer ring */
+        /* Pulsing keyframe for shield outer container */
         @keyframes shieldPulse {
             0% {
                 transform: scale(1.0);
-                opacity: 0.7;
+                box-shadow: 0 0 20px rgba(0, 200, 150, 0.03);
             }
             100% {
-                transform: scale(1.08);
-                opacity: 1.0;
-                box-shadow: 0 0 15px rgba(0, 200, 150, 0.15);
+                transform: scale(1.05);
+                box-shadow: 0 0 35px rgba(0, 200, 150, 0.12);
+            }
+        }
+
+        /* Rotation keyframe */
+        @keyframes spin {
+            100% {
+                transform: rotate(360deg);
             }
         }
 
@@ -243,11 +276,11 @@
                 transform: scaleY(1.0);
             }
             50% {
-                transform: scaleY(0.4);
+                transform: scaleY(0.3);
             }
         }
 
-        /* Interactivity styling when service stops */
+        /* Inactive protection state classes */
         .device-container.inactive .status-dot {
             background-color: var(--neon-coral);
             box-shadow: 0 0 10px var(--neon-coral);
@@ -255,29 +288,34 @@
 
         .device-container.inactive .status-text {
             color: var(--neon-coral);
-            content: "PROTECTION INACTIVE";
+        }
+
+        .device-container.inactive .shield-glass-container {
+            border-color: rgba(255, 107, 107, 0.2);
+            background: rgba(255, 107, 107, 0.02);
+            box-shadow: none;
+            animation-play-state: paused;
+        }
+
+        .device-container.inactive .shield-glow-ring {
+            animation-play-state: paused;
+            border-color: rgba(255, 107, 107, 0.1);
+            background-color: transparent;
         }
 
         .device-container.inactive .shield-button {
             border-color: var(--neon-coral);
-            box-shadow: 0 0 20px rgba(255, 107, 107, 0.2);
+            box-shadow: 0 0 20px rgba(255, 107, 107, 0.15);
         }
 
         .device-container.inactive .shield-icon {
             fill: var(--neon-coral);
         }
 
-        .device-container.inactive .shield-glow-ring {
-            animation-play-state: paused;
-            border-color: rgba(255, 107, 107, 0.1);
-            background-color: rgba(255, 107, 107, 0.02);
-            box-shadow: none;
-        }
-
         .device-container.inactive .wave-bar {
             animation-play-state: paused;
             background-color: var(--gray-light);
-            opacity: 0.3;
+            opacity: 0.2;
         }
     </style>
 </head>
@@ -297,17 +335,27 @@
 
         <!-- Shield button section -->
         <div class="shield-section">
-            <div class="shield-glow-ring"></div>
-            <div class="shield-button" id="shieldButton" onclick="toggleProtection()">
-                <svg class="shield-icon" viewBox="0 0 24 24" id="shieldIcon">
-                    <!-- Premium shield path -->
-                    <path d="M12,2L4,5v6c0,5.55 3.84,10.74 9,12 5.16,-1.26 9,-6.45 9,-12V5l-9,-3zm0,10.99h7c-0.53,4.12 -3.28,7.79 -7,8.94V13H5V6.3l7,-3.11v9.81z"/>
-                </svg>
+            <!-- Frosted Glassmorphism Outer Container -->
+            <div class="shield-glass-container">
+                <div class="shield-glow-ring"></div>
+                <div class="shield-button" id="shieldButton" onclick="toggleProtection()">
+                    <svg class="shield-icon" viewBox="0 0 24 24" id="shieldIcon">
+                        <path d="M12,2L4,5v6c0,5.55 3.84,10.74 9,12 5.16,-1.26 9,-6.45 9,-12V5l-9,-3zm0,10.99h7c-0.53,4.12 -3.28,7.79 -7,8.94V13H5V6.3l7,-3.11v9.81z"/>
+                    </svg>
+                </div>
             </div>
         </div>
 
-        <!-- Scrolling Audio Wave visualizer placeholder -->
+        <!-- Scrolling Frequency Spectrum visualizer -->
         <div class="audio-wave-container" id="waveContainer">
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
             <div class="wave-bar"></div>
             <div class="wave-bar"></div>
             <div class="wave-bar"></div>
@@ -348,10 +396,12 @@
             active = !active;
             const device = document.getElementById('device');
             const statusText = document.getElementById('statusText');
+            const shieldIcon = document.getElementById('shieldIcon');
             
             if (active) {
                 device.classList.remove('inactive');
                 statusText.innerText = "Live Edge Protection Active";
+                // Lock shield closed icon representation can be swapped or modified
             } else {
                 device.classList.add('inactive');
                 statusText.innerText = "Protection Inactive";

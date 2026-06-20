@@ -114,7 +114,7 @@ class MainActivity : ComponentActivity() {
                 val subtitlePulseAnim = AnimationUtils.loadAnimation(context, R.anim.subtitle_pulse)
                 statusLayout.startAnimation(subtitlePulseAnim)
 
-                // Start background animation for audio wave bars
+                // Start background animation for audio wave bars (20 elements for smooth visualizer)
                 val waveBars = listOf(
                     view.findViewById<android.view.View>(R.id.waveBar1),
                     view.findViewById<android.view.View>(R.id.waveBar2),
@@ -127,7 +127,15 @@ class MainActivity : ComponentActivity() {
                     view.findViewById<android.view.View>(R.id.waveBar9),
                     view.findViewById<android.view.View>(R.id.waveBar10),
                     view.findViewById<android.view.View>(R.id.waveBar11),
-                    view.findViewById<android.view.View>(R.id.waveBar12)
+                    view.findViewById<android.view.View>(R.id.waveBar12),
+                    view.findViewById<android.view.View>(R.id.waveBar13),
+                    view.findViewById<android.view.View>(R.id.waveBar14),
+                    view.findViewById<android.view.View>(R.id.waveBar15),
+                    view.findViewById<android.view.View>(R.id.waveBar16),
+                    view.findViewById<android.view.View>(R.id.waveBar17),
+                    view.findViewById<android.view.View>(R.id.waveBar18),
+                    view.findViewById<android.view.View>(R.id.waveBar19),
+                    view.findViewById<android.view.View>(R.id.waveBar20)
                 )
                 
                 // Launch coroutine to animate wave bars heights
