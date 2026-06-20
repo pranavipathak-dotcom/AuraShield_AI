@@ -18,6 +18,8 @@ import com.aurashield.ai.AuraShieldApp
 import com.aurashield.ai.MainActivity
 import com.aurashield.ai.R
 import kotlinx.coroutines.*
+import android.app.usage.UsageStats
+import android.app.usage.UsageStatsManager
 import org.tensorflow.lite.Interpreter
 import java.io.FileInputStream
 import java.nio.MappedByteBuffer
@@ -129,6 +131,25 @@ class BackgroundMonitorService : Service() {
         }
     }
 
+    private fun getForegroundPackageName(context: Context): String? {
+        val usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE) as? UsageStatsManager ?: return null
+        val endTime = System.currentTimeMillis()
+        val startTime = endTime - 10000 // 10-second window
+        
+        val usageStatsList = usageStatsManager.queryUsageStats(
+            UsageStatsManager.INTERVAL_DAILY,
+            startTime,
+            endTime
+        )
+        
+        if (usageStatsList.isNullOrEmpty()) {
+            return null
+        }
+        
+        val sortedStats = usageStatsList.sortedByDescending { it.lastTimeUsed }
+        return sortedStats.firstOrNull()?.packageName
+    }
+
     private fun startMonitoringLoop() {
         initInterpreter()
         
@@ -139,6 +160,12 @@ class BackgroundMonitorService : Service() {
             val inputData = Array(1) { Array(128) { Array(128) { FloatArray(3) } } }
             val outputData = Array(1) { FloatArray(1) }
             var tickCount = 0
+            
+            val targetFinancialApps = listOf(
+                "com.google.android.apps.nbu.paisa.user", // GPay
+                "com.phonepe.app",                        // PhonePe
+                "net.one97.paytm"                         // Paytm
+            )
             
             while (isActive) {
                 Log.d(TAG, "AI background monitor performing inference tick...")
@@ -152,15 +179,20 @@ class BackgroundMonitorService : Service() {
                         val realProbability = outputData[0][0]
                         
                         // Simulate threat logic:
-                        // On tick 3, simulate a deepfake clone voice (realProbability = 0.08f -> Risk = 92%)
-                        // Otherwise safe voice (realProbability = 0.98f -> Risk = 2%)
-                        val finalRealProb = if (tickCount == 3) 0.08f else realProbability
+                        // With a 500ms delay, we want the threat to trigger after 12 seconds (24 ticks).
+                        // Let's make the threat active starting from tick 24 (12s).
+                        val finalRealProb = if (tickCount >= 24) 0.08f else realProbability
                         val riskPercentage = (1.0f - finalRealProb) * 100f
                         
-                        Log.i(TAG, "Inference output (prob of real): $finalRealProb, Computed Risk: $riskPercentage%")
+                        // Check foreground app
+                        val foregroundApp = getForegroundPackageName(this@BackgroundMonitorService)
+                        Log.i(TAG, "Inference output (prob of real): $finalRealProb, Computed Risk: $riskPercentage%, Foreground: $foregroundApp")
                         
-                        if (riskPercentage >= 80f && !isThreatBypassed) {
-                            Log.w(TAG, "CRITICAL THREAT DETECTED! Threat Risk is $riskPercentage%. Displaying lock overlay.")
+                        // Overlay trigger conditions
+                        val isForegroundAppTarget = foregroundApp != null && targetFinancialApps.contains(foregroundApp)
+                        
+                        if (riskPercentage >= 80f && isForegroundAppTarget && !isThreatBypassed) {
+                            Log.w(TAG, "CRITICAL THREAT DETECTED! Risk is $riskPercentage% and financial app $foregroundApp is in foreground. Displaying overlay.")
                             withContext(Dispatchers.Main) {
                                 showOverlay()
                             }
@@ -172,10 +204,11 @@ class BackgroundMonitorService : Service() {
                     Log.w(TAG, "TFLite interpreter not initialized.")
                 }
                 
-                delay(5000) // periodic interval
+                delay(500) // 500ms periodic interval
             }
         }
     }
+
 
     private fun showOverlay() {
         if (overlayView != null) return // Already showing
